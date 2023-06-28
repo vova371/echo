@@ -10,16 +10,9 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#define BUFF_SIZE 1024
+#include "common.h"
 
-static __inline__ void error_check(int ret, const char* text)
-{
-    if (ret == -1)
-    {
-        printf("error %s: %s\n", text, strerror(errno));
-        exit(1);
-    }
-}
+#define BUFF_SIZE 1024
 
 int main(int argc, char *argv[])
 {
