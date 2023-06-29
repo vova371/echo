@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     int ret = connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
 
-    error_check(ret, "bind socket");
+    error_check(ret, "connect");
 
     ret = fcntl(sockfd, F_SETFL, O_NONBLOCK);
     error_check(ret, "fcntl set nonblock flag");
