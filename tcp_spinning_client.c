@@ -87,5 +87,5 @@ int main(int argc, char *argv[])
 
     close(sockfd);
 
-    printf("send/recv %d values in %ldns rate %ld\n", count, n1 - n0, (n1 - n0) / count);
+    printf("send/recv %d values in %ldns rate %ldns per message\n", count, n1 - n0, (n1 - n0) / count);
 }
