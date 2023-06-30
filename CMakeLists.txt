@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.0)
 project (echo_servers)
 
+add_subdirectory(asio)
+
 foreach(proto udp tcp)
   foreach(type blocking spinning)
     foreach(side client server)
