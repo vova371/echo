@@ -11,6 +11,8 @@ foreach(proto udp tcp)
   endforeach()
 endforeach()
 
+list(APPEND names tcp_epolling_server)
+
 foreach(name ${names})
     message(NOTICE "executable: " ${name})
     add_executable(${name} ${name}.c)
