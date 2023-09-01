@@ -1,0 +1,10 @@
+version: '2'
+services:
+  echo_build:
+    image: centos-boost
+    volumes:
+    - ${HOME}/Sources:/src:ro
+    - ${HOME}/Builds:/builds
+    working_dir: /builds
+    command:
+    - cmake -B /builds/echo --config Release /src/echo && (cd echo; make)

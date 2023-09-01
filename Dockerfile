@@ -25,3 +25,8 @@ RUN BOOST_DIRNAME=boost_${BOOST_VERSION//./_} && \
     ./b2 install && \
     cd .. && \
     rm -fr ${BOOST_DIRNAME}
+
+RUN groupadd -g 1001 dev-group && useradd -m -u 1001 -g dev-group dev-user
+USER dev-user
+
+ENTRYPOINT ["/bin/bash", "--login", "-c"]
