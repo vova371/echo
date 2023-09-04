@@ -10,7 +10,7 @@ namespace this_coro = boost::asio::this_coro;
 
 #if defined(BOOST_ASIO_ENABLE_HANDLER_TRACKING)
 # define use_awaitable \
-  boost::asio::use_awaitable_t(__FILE__, __LINE__, __PRETTY_FUNCTION__)
+    boost::asio::use_awaitable_t(__FILE__, __LINE__, __PRETTY_FUNCTION__)
 #endif
 
 awaitable<void> echo(tcp::socket socket)
@@ -34,10 +34,10 @@ awaitable<void> echo(tcp::socket socket)
     }
 }
 
-awaitable<void> listener(unsigned short port)
+awaitable<void> listener(tcp::endpoint const& endpoint)
 {
     auto executor = co_await this_coro::executor;
-    tcp::acceptor acceptor(executor, {tcp::v4(), port});
+    tcp::acceptor acceptor(executor, endpoint);
 
     for (;;)
     {
@@ -50,14 +50,18 @@ int main(int argc, char* argv[])
 {
     try
     {
-        unsigned short port = argc == 2 ? std::atoi(argv[1]) : 8080;
+        const char* local_ip = argc < 3 ? "0.0.0.0" : argv[1];
+        const char* port = argc < 3 ? argc < 2 ? "8080" : argv[1] : argv[2];
+
+        tcp::endpoint endpoint(
+            boost::asio::ip::make_address_v4(local_ip),
+            std::atoi(port));
 
         boost::asio::io_context io_context(1);
         boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
+
         signals.async_wait([&](auto, auto){ io_context.stop(); });
-
-        co_spawn(io_context, listener(port), detached);
-
+        co_spawn(io_context, listener(endpoint), detached);
         io_context.run();
     }
     catch (std::exception& e)

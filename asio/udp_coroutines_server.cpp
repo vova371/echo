@@ -36,16 +36,19 @@ int main(int argc, char* argv[])
 {
     try
     {
-        unsigned short port = argc == 2 ? std::atoi(argv[1]) : 8080;
+        const char* local_ip = argc < 3 ? "0.0.0.0" : argv[1];
+        const char* port = argc < 3 ? argc < 2 ? "8080" : argv[1] : argv[2];
+
+        udp::endpoint endpoint(
+            boost::asio::ip::make_address_v4(local_ip),
+            std::atoi(port));
 
         boost::asio::io_context io_context(1);
         boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
+        udp::socket socket(io_context, endpoint);
+
         signals.async_wait([&](auto, auto){ io_context.stop(); });
-
-        udp::socket socket(io_context, udp::endpoint(udp::v4(), port));
-
         co_spawn(io_context, echo(std::move(socket)), detached);
-
         io_context.run();
     }
     catch (std::exception& e)
