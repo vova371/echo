@@ -16,7 +16,7 @@ RUN alternatives --install /usr/bin/python python /usr/bin/python3 30
 RUN alternatives --install /usr/bin/cmake cmake /usr/bin/cmake3 30
 
 # Download, build and install boost
-ARG BOOST_VERSION=1.82.0
+ARG BOOST_VERSION=1.83.0
 RUN BOOST_DIRNAME=boost_${BOOST_VERSION//./_} && \
     BOOST_URL=https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/${BOOST_DIRNAME}.tar.bz2 && \
     wget -O - ${BOOST_URL} | tar xjf - && \

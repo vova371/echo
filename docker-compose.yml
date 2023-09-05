@@ -1,7 +1,6 @@
 version: '2'
 services:
   echo_build:
-    image: centos-boost
     build: .
     volumes:
     - ${HOME}/Sources:/src:ro
